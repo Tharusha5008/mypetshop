@@ -1,10 +1,3 @@
-/* =========================================================
-   Mealtime — shared cart store (localStorage-backed)
-   Used across index.html, cart.html, and any page with a
-   cart icon in the header. This is client-side only, for
-   demo/assignment purposes — a real shop would sync this
-   with the server via the orders/order_items tables.
-   ========================================================= */
 
 const CART_KEY = 'mealtime_cart';
 

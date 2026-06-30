@@ -21,7 +21,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
         $error = 'Please enter a valid email address.';
     } else {
-        // Link to a logged-in customer if there is one; otherwise it's a guest complaint.
+     
         $customerId = $_SESSION['customer_id'] ?? null;
 
         $stmt = mysqli_prepare($conn,
@@ -39,7 +39,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 
-// Pull the most recent complaints to show as a live status list.
 $recent = [];
 $recentResult = mysqli_query($conn,
     "SELECT complaint_id, complaint_type, status, submitted_at FROM complaints ORDER BY submitted_at DESC LIMIT 5");

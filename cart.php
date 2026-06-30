@@ -21,8 +21,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['checkout'])) {
     } elseif ($fullName === '' || $address1 === '' || $city === '' || $postalCode === '' || $email === '') {
         $checkoutError = 'Please fill in all delivery details.';
     } else {
-        // Re-fetch real prices from the database for every product in the cart.
-        // Never trust prices sent from the browser — they could be tampered with.
         $verifiedItems = [];
         $subtotal = 0;
 
@@ -54,10 +52,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['checkout'])) {
         } else {
             $delivery = $subtotal < 50 ? 4.99 : 0.00;
             $total = $subtotal + $delivery;
-
-            // If logged in, attach the order to the customer. Otherwise, walk through
-            // a lightweight guest path: find-or-create a customer row by email so the
-            // order still satisfies the NOT NULL customer_id foreign key in schema.sql.
             $customerId = $_SESSION['customer_id'] ?? null;
 
             if (!$customerId) {
@@ -81,7 +75,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['checkout'])) {
                 }
             }
 
-            // Insert the delivery address.
+           
             $insertAddr = mysqli_prepare($conn,
                 "INSERT INTO addresses (customer_id, label, address_line1, city, postal_code, country)
                  VALUES (?, 'Checkout', ?, ?, ?, 'Sri Lanka')");
@@ -90,7 +84,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['checkout'])) {
             $addressId = mysqli_insert_id($conn);
             mysqli_stmt_close($insertAddr);
 
-            // Insert the order.
             $insertOrder = mysqli_prepare($conn,
                 "INSERT INTO orders (customer_id, address_id, status, subtotal, delivery_fee, total)
                  VALUES (?, ?, 'paid', ?, ?, ?)");
@@ -99,7 +92,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['checkout'])) {
             $orderId = mysqli_insert_id($conn);
             mysqli_stmt_close($insertOrder);
 
-            // Insert each order line item.
+         
             $insertItem = mysqli_prepare($conn,
                 "INSERT INTO order_items (order_id, product_id, quantity, unit_price, line_total)
                  VALUES (?, ?, ?, ?, ?)");

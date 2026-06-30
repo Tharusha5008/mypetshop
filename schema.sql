@@ -1,7 +1,4 @@
--- =========================================================
--- Mealtime Pet Food Shop — Database Schema
--- Target: MySQL 8.0+ / MariaDB 10.5+ (uses utf8mb4, JSON, CHECK constraints)
--- =========================================================
+
 
 CREATE DATABASE IF NOT EXISTS mealtime_shop
   CHARACTER SET utf8mb4
@@ -9,9 +6,6 @@ CREATE DATABASE IF NOT EXISTS mealtime_shop
 
 USE mealtime_shop;
 
--- ---------------------------------------------------------
--- Categories (Dog / Cat / Small Pet, etc.)
--- ---------------------------------------------------------
 CREATE TABLE categories (
   category_id     INT AUTO_INCREMENT PRIMARY KEY,
   name             VARCHAR(50)  NOT NULL UNIQUE,
@@ -20,9 +14,7 @@ CREATE TABLE categories (
   created_at       TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB;
 
--- ---------------------------------------------------------
--- Products
--- ---------------------------------------------------------
+
 CREATE TABLE products (
   product_id       INT AUTO_INCREMENT PRIMARY KEY,
   category_id      INT NOT NULL,
@@ -44,9 +36,7 @@ CREATE TABLE products (
   INDEX idx_products_active (is_active)
 ) ENGINE=InnoDB;
 
--- ---------------------------------------------------------
--- Customers
--- ---------------------------------------------------------
+
 CREATE TABLE customers (
   customer_id      INT AUTO_INCREMENT PRIMARY KEY,
   full_name        VARCHAR(120) NOT NULL,
@@ -56,9 +46,7 @@ CREATE TABLE customers (
   created_at       TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB;
 
--- ---------------------------------------------------------
--- Customer addresses (a customer can have multiple)
--- ---------------------------------------------------------
+
 CREATE TABLE addresses (
   address_id       INT AUTO_INCREMENT PRIMARY KEY,
   customer_id      INT NOT NULL,
@@ -74,9 +62,6 @@ CREATE TABLE addresses (
   INDEX idx_addresses_customer (customer_id)
 ) ENGINE=InnoDB;
 
--- ---------------------------------------------------------
--- Orders
--- ---------------------------------------------------------
 CREATE TABLE orders (
   order_id         INT AUTO_INCREMENT PRIMARY KEY,
   customer_id      INT NOT NULL,
@@ -96,9 +81,6 @@ CREATE TABLE orders (
   INDEX idx_orders_status (status)
 ) ENGINE=InnoDB;
 
--- ---------------------------------------------------------
--- Order line items
--- ---------------------------------------------------------
 CREATE TABLE order_items (
   order_item_id    INT AUTO_INCREMENT PRIMARY KEY,
   order_id         INT NOT NULL,
@@ -114,9 +96,6 @@ CREATE TABLE order_items (
   INDEX idx_order_items_product (product_id)
 ) ENGINE=InnoDB;
 
--- ---------------------------------------------------------
--- Complaints (from the Complaints page)
--- ---------------------------------------------------------
 CREATE TABLE complaints (
   complaint_id     INT AUTO_INCREMENT PRIMARY KEY,
   customer_id      INT NULL,                 -- nullable: guests can also file complaints
@@ -136,9 +115,6 @@ CREATE TABLE complaints (
   INDEX idx_complaints_customer (customer_id)
 ) ENGINE=InnoDB;
 
--- ---------------------------------------------------------
--- Contact / inquiry messages (from the Contact page)
--- ---------------------------------------------------------
 CREATE TABLE contact_messages (
   message_id       INT AUTO_INCREMENT PRIMARY KEY,
   name             VARCHAR(120) NOT NULL,
@@ -148,9 +124,7 @@ CREATE TABLE contact_messages (
   is_resolved      BOOLEAN DEFAULT FALSE
 ) ENGINE=InnoDB;
 
--- =========================================================
--- Seed data
--- =========================================================
+
 
 INSERT INTO categories (name, slug, description) VALUES
   ('Dog', 'dog', 'Food for dogs of every life stage'),

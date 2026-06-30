@@ -3,7 +3,7 @@ require_once 'includes/db.php';
 
 $pageTitle = 'Mealtime — Pet Food, Done Right';
 
-// Pull active products with their category slug, straight from the database.
+
 $sql = "SELECT p.product_id, p.name, p.description, p.price, p.life_stage,
                p.weight_kg, p.is_grain_free, c.slug AS category_slug
         FROM products p
@@ -17,7 +17,7 @@ while ($row = mysqli_fetch_assoc($result)) {
     $products[] = $row;
 }
 
-// Simple emoji per category, just for visual variety since we don't have real photos yet.
+
 function categoryEmoji($slug) {
     return match ($slug) {
         'dog' => '🐶',

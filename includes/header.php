@@ -1,9 +1,5 @@
 <?php
-/**
- * header.php — shared site header.
- * Expects $conn and session already started (via db.php).
- * Optional: $pageTitle can be set before including this file.
- */
+
 $pageTitle = $pageTitle ?? 'Mealtime — Pet Food, Done Right';
 $loggedIn = isset($_SESSION['customer_id']);
 $customerName = $_SESSION['customer_name'] ?? '';
